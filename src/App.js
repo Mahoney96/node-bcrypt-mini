@@ -21,9 +21,10 @@ class App extends Component {
       password: ''
     })
   }
+
   async signup() {
     let {email, password} = this.state;
-    let response = await axios.post('/auth/login', {email, password});
+    let response = await axios.post('/auth/signup', {email, password});
     this.setState({
       loggedInUser: response.data,
       email: '',
@@ -31,11 +32,9 @@ class App extends Component {
     })
   }
 
-  async signup() {}
-
   logout() {
     axios.get('/auth/logout');
-    this.setState({loggedInUser})
+    this.setState({loggedInUser: {}})
   }
 
   render() {
@@ -80,3 +79,4 @@ class App extends Component {
 }
 
 export default App;
+
