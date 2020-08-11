@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const massive = require('massive');
+const ctrl = require('./controller');
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(
   session({
     secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    cookie: {maxAge: 1000 * 60 * 60 *24}
   })
 );
 
@@ -22,6 +24,8 @@ massive(CONNECTION_STRING).then(db => {
   app.set('db', db);
 });
 
+app.post('/auth/signup')
+
 app.listen(SERVER_PORT, () => {
-  console.log(`Listening on port: ${SERVER_PORT}`);
+  console.log(`Hey Hey, Your Port, Works Today ${SERVER_PORT}`);
 });
