@@ -32,25 +32,26 @@ module.exports = {
         //     }})
         // })
     },
-},
-login; async (req, res) => {
-    let {email, password} = req.body;
-    let db = req.app.get('db');
-    let foundUser = await db.check_user_exists([email]);
-    if(!foundUser[0]){
-        return res.status(401).send('Incorrect login information')
-    }
-    let result = bcrypt.compareSync(password, foundUser[0].user_password)
-    if(result){
-        req.session.user = {
-            id: foundUser[0].id,
-            email: foundUser[0].email
+    login: async (req, res) => {
+        let {email, password} = req.body;
+        let db = req.app.get('db');
+        let foundUser = await db.check_user_exists([email]);
+        if(!foundUser[0]){
+            return res.status(401).send('Incorrect login information')
         }
-    } else {
-        return res.status(401).send('Incorrect login information')
+        let result = bcrypt.compareSync(password, foundUser[0].user_password)
+        if(result){
+            req.session.user = {
+                id: foundUser[0].id,
+                email: foundUser[0].email
+            }
+            res.status(200).send(req.session.user);
+        } else {
+            return res.status(401).send('Incorrect login information')
+        }
+    },
+    logout: (req, res) => {
+        req.session.destroy();
+        res.sendStatus(200);
     }
-},
-logout; (req, res) => {
-    req.session.destroy();
-    res.sendStatus(200);
 }
