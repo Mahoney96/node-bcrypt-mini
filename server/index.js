@@ -24,7 +24,9 @@ massive(CONNECTION_STRING).then(db => {
   app.set('db', db);
 });
 
-app.post('/auth/signup')
+app.post('/auth/signup', ctrl.signup);
+app.post('/auth/login', ctrl.login);
+app.put('/auth/logout', ctrl.logout);
 
 app.listen(SERVER_PORT, () => {
   console.log(`Hey Hey, Your Port, Works Today ${SERVER_PORT}`);
